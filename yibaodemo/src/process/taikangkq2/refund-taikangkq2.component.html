@@ -1,0 +1,87 @@
+<div [ngSwitch]="state">
+    <div *ngSwitchCase="'Initial'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text" style=" color:red">
+                           不支持 泰康齿科商保退费
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                
+                <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    <span>费用明细</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body">
+                        <table class="table table-hover" *ngFor="let form of hisData.chargeItemForms">
+                            <thead>
+                                <tr>
+                                    <th>项目编号</th>
+                                    <th>项目名称</th>
+                                    <th>单位</th>
+                                    <th>单价</th>
+                                    <th>数量</th>
+                                    <th>金额</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of form.chargeItems">
+                                    <td>{{item.insurance?item.chargeItem.channelData.id:'[无医保对应项，不参与医保结算]'}}</td>
+                                    <td>{{item.chargeItem.name}}</td>
+                                    <td>{{item.chargeItem.unit}}</td>
+                                    <td>{{item.chargeItem.price}}</td>
+                                    <td>{{item.amount}}</td>
+                                    <td>{{item.total}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span>总费用： {{hisData.total}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm" *ngIf="state == 'PreSettled'">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    <span>结算信息</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>总金额: {{settleResult?.bcbxf0}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>帐户支付额: {{settleResult?.zhzfe0}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>个人现金支付额: {{settleResult?.grzfe0}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>个人帐户余额: {{settleResult?.grzhye}}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="m-portlet m-portlet--mobile">
+  <div class="m-portlet__body">
+      <div style="margin:8px;">
+          <h3>选择保险结算渠道</h3>
+      </div>
+      <div *ngFor="let channel of channels" style="width:300px;margin:8px;">
+        <div>
+            <button class="btn btn-primary btn-block" (click)="chooseChannel(channel)">{{enumDict.channel[channel]}}</button>
+        </div>
+      </div>
+  </div>
+</div>

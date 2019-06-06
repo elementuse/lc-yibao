@@ -1,0 +1,72 @@
+<div [@routerTransition]>
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>对账</span>
+                </h3>
+                <span class="m-section__sub">
+                    台州医保日对账
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+              <div class="m-form m-form--label-align-right">
+                    <form  autocomplete="off">
+                        <div class="form-body">
+                            <div class="row m--margin-bottom-10">
+                                <div class="col-md-4">
+                                    <p-calendar id="checkDate" name="checkDate" [(ngModel)]="checkDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true" readonlyInput="true" dateFormat="yy-mm-dd" [locale]="ch" aria-placeholder="对账日期"></p-calendar>
+                                </div>
+                                <div class="col-md-4">
+                                  <button name="RefreshButton" class="btn btn-primary" (click)="dayCheck()" [disabled]="isLoading"><i class="fa fa-check"></i>对账</button>
+                                  <button name="RefreshButton" class="btn btn-primary" (click)="getList()" [disabled]="isLoading" *ngIf="isCheck"><i class="fa fa-search" ></i>查看明细</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row align-items-center" *ngIf="isSearch">
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                            [paginator]="false"
+                            [lazy]="true"
+                            [responsive]="primengTableHelper.isResponsive">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>保险流水号</th>
+                                    <th>患者</th>
+                                    <th>类型</th>
+                                    <th>结算号</th>
+                                    <th>结算时间</th>
+                                    <th>总费用（医院）</th>
+                                    <th>总费用（医保）</th>
+                                    <th>总报销（医院）</th>
+                                    <th>总报销（医保）</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr [ngClass]="record.calculateResultInfo?.p1 != record.yibaoInfo?.p6 || record.calculateResultInfo?.p10 != record.yibaoInfo?.p7 ? 'check-notequal' : null">
+                                    <td>{{record.id}}</td>
+                                    <td>{{record.patientName}}</td>
+                                    <td>{{constprocessType[record.type]}}</td>
+                                    <td>{{record.settleNo}}</td>
+                                    <td>{{record.settleDate}}</td>
+                                    <td>{{record.calculateResultInfo?.p1}}</td>
+                                    <td>{{record.yibaoInfo?.p6}}</td>
+                                    <td>{{record.calculateResultInfo?.p10}}</td>
+                                    <td>{{record.yibaoInfo?.p7}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div bsModal #declarationModal="bs-modal"  class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+     aria-hidden="true" [config]="{backdrop: 'static'}">
+     <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title">
+                  <span *ngIf="!isBubao">医疗费用申报</span>
+                  <span *ngIf="isBubao">医疗费用补报</span>
+              </h4>
+              <button type="button" class="close" (click)="close()" attr.aria-label="关闭">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="row" *ngIf="isBubao">
+                <div class="col-md-12">
+                      <label for="monthselect">请选择补报的月份：</label>
+                      <select id="monthselect" class="form-control" tabindex="-98" [(ngModel)]="datestr" (ngModelChange)="queryMonthlyReport()">
+                          <option value="">请选择</option>
+                          <option *ngFor="let item of months" [value]="item.p1">{{item.p1}}（金额：{{item.p2}}）</option>
+                      </select>
+                </div>
+              </div>
+              <div class="row" *ngIf="isBubao" style="height: 20px"></div>
+              <div class="row">                
+                  <div *ngFor="let item of reports" class="col-md-6">
+                      {{item.name}}: {{item.value}}
+                  </div>
+              </div>
+
+            </div>
+          
+          <div class="modal-footer">
+              <button type="button" [disabled]="!canreport" class="btn btn-primary" (click)="declare()" [buttonBusy]="saving" [busyText]="text">申报</button>
+          </div>
+      </div>
+     </div>
+</div>

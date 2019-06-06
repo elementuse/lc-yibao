@@ -1,0 +1,229 @@
+<div [ngSwitch]="state">
+    <div *ngSwitchCase="'Initial'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            E看牙传入数据:
+                        </h3>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="m-portlet__body">
+                <div style="height:300px;overflow-y:scroll;width: auto">
+                    <pre>{{hisData|json}}</pre>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="state == 'Initial'">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                收费
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>费用明细</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <table class="table table-hover" *ngFor="let form of hisData.chargeItemForms">
+                                <thead>
+                                    <tr>
+                                        <th>项目编号</th>
+                                        <th>项目名称</th>
+                                        <th>单位</th>
+                                        <th>单价</th>
+                                        <th>数量</th>
+                                        <th>金额</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of form.chargeItems">
+                                        <td>{{item.insurance?item.chargeItem.channelData.id:'[无医保对应项，不参与医保结算]'}}</td>
+                                        <td>{{item.chargeItem.name}}</td>
+                                        <td>{{item.chargeItem.unit}}</td>
+                                        <td>{{item.chargeItem.price}}</td>
+                                        <td>{{item.amount}}</td>
+                                        <td>{{item.total}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span>总费用： {{hisData.total}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>诊断</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>挂号科室：</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="科室" required [(ngModel)]="hisData.department.name" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="docselect">开单医生：</label>
+                                            <select id="docselect" name="docselect" class="form-control" required [(ngModel)]="hisData.doctor.id">
+                                                <option *ngFor="let provider of providers" value="{{provider.hisObjectId}}">{{provider.channelObjectName}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>诊断：</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" disabled="disabled" placeholder="诊断信息" required [(ngModel)]="hisData.diagnose.name" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>选择报销比例</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>100%报销：</label><input id="rdo1" type="radio" name="rdo" checked="checked" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+
+                                            <label>80%报销：</label> <input id="rdo2" type="radio" name="rdo" />
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+
+                                            <label for="docselect">0%报销：</label><input id="rdo3" type="radio" name="rdo" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary blue" *ngIf="state == 'Initial'" (click)="settle()">结算成功</button>
+                    <button type="submit" class="btn btn-primary blue" *ngIf="state == 'Initial'" (click)="fail('放弃结算')">结算失败</button>
+                    <button type="submit" class="btn btn-primary blue" *ngIf="state == 'Initial'" (click)="settleErrorData('结算错误数据')">结算错误数据</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+        <div *ngSwitchCase="'Settled'">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                测试医保 结算完成
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm" *ngIf="state == 'Settled'">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>结算信息</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>总金额： {{settleResult?.total}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>帐户支付额： {{settleResult?.accountDisburse}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>个人现金支付额： {{settleResult?.cashDisburse}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>个人帐户余额： {{settleResult?.balance}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary blue" *ngIf="state == 'Settled'" (click)="print()">打印</button>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div *ngSwitchCase="'SettleFailed'">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                测试医保 结算失败
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    {{failedMessage}}
+                </div>
+            </div>
+        </div>
+</div>

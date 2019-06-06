@@ -1,0 +1,848 @@
+<div [ngSwitch]="state">
+        <div *ngSwitchCase="'Initial'">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                杭州医保 门诊
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body" *ngIf="!insuranceCheck">
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>费用明细</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <table class="table table-hover" *ngFor="let form of hisData.chargeItemForms">
+                                <thead>
+                                    <tr>
+                                        <th>项目编号</th>
+                                        <th>项目名称</th>
+                                        <th>单位</th>
+                                        <th>单价</th>
+                                        <th>数量</th>
+                                        <th>金额</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of form.chargeItems" [ngClass]="{'noyibao': !item.insurance}">
+                                        <td>{{item.insurance?item.chargeItem.channelData.id:'[无医保对应项]'}}</td>
+                                        <td>{{item.chargeItem.name}}</td>
+                                        <td>{{item.chargeItem.unit}}</td>
+                                        <td>{{item.chargeItem.price}}</td>
+                                        <td>{{item.amount}}</td>
+                                        <td>{{item.total}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span>注：包含非医保项目，请先点击放弃按钮，然后删除或者注册非医保项目！</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-danger" (click)="fail('包含非医保项目')">放弃</button>
+                </div>
+                <div class="m-portlet__body" *ngIf="insuranceCheck">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>持卡类型</label>
+                            </div>
+                            <div class="col-md-9">
+                                <label>卡号</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <select class="form-control" [(ngModel)]="baseParams.cardType">
+                                    <option value="0">市民卡</option>
+                                    <option value="1">证历本</option>
+                                    <option value="2">西湖卡</option>
+                                </select>
+                            </div>
+                            <div class="col-md-9 form-inline">
+                                <input auto-focus *ngIf="baseParams.cardType==1" class="form-control input-ltr" style="width: 300px;" type="text" [(ngModel)]="cardNumber" placeholder="请输入证历本号 " maxlength="50">
+                                <input *ngIf="baseParams.cardType==1" class="form-control input-ltr" style="width: 200px; margin-left: 4px;" type="text" [(ngModel)]="identityCode" placeholder="身份证号(后六位)" maxlength="6">
+                                <button type="submit" class="btn btn-primary blue" style="margin-left: 4px;" (click)="readcard()">读卡</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>个人信息</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="m-portlet__body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>姓名: {{patient?.p5}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>性别: {{config.xb[patient?.p6]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>出生日期: {{patient?.p8}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>个人编号: {{patient?.p1}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>身份证号: {{patient?.p4}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>单位名称: {{patient?.p3}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>医保卡号: {{patient?.p9}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>医疗待遇: {{config.yldy[patient?.p10]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>医疗证号: {{patient?.p11}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>人员类别: {{config.rylb[patient?.p34]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>当年帐户余额: {{patient?.p15}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>当年账户已用: {{patient?.p23}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>门诊起付标准累计: {{patient?.p25}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>历年账户余额: {{patient?.p16}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>历年账户已用: {{patient?.p24}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>诊断</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="docselect">开单医生：</label>
+                                            <select id="docselect" name="docselect" class="form-control" [(ngModel)]="hisData.doctor.id">
+                                                <option *ngFor="let provider of providers" value="{{provider.hisObjectId}}">{{provider.channelObjectName}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>诊断：</label>
+                                            <div class="input-group">
+                                                <nz-select [nzMaxMultipleCount]="3" nzMode="multiple" nzPlaceHolder="请选择诊断" [(ngModel)]="selectedDiagnoses">
+                                                    <nz-option *ngFor="let diagnose of diagnoses" [nzLabel]="diagnose.channelObjectName" [nzValue]="diagnose.channelObjectId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <button type="submit" class="btn btn-danger" (click)="fail('放弃挂号')">放弃</button>
+                    <button type="submit" class="btn btn-primary blue" [disabled]="patient==null || !patient.allow" (click)="register()">挂号</button>
+    
+                </div>
+            </div>
+        </div>
+        <div *ngSwitchCase="'Registered'">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                杭州医保 处方上传
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>个人信息</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="m-portlet__body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>姓名: {{patient?.p5}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>性别: {{config.xb[patient?.p6]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>出生日期: {{patient?.p8}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>个人编号: {{patient?.p1}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>身份证号: {{patient?.p4}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>单位名称: {{patient?.p3}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>医保卡号: {{patient?.p9}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>医疗待遇: {{config.yldy[patient?.p10]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>医疗证号: {{patient?.p11}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>人员类别: {{config.rylb[patient?.p34]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>当年帐户余额: {{patient?.p15}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>当年账户已用: {{patient?.p23}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>门诊起付标准累计: {{patient?.p25}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>历年账户余额: {{patient?.p16}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>历年账户已用: {{patient?.p24}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>费用明细</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <table class="table table-hover" *ngFor="let form of hisData.chargeItemForms">
+                                <thead>
+                                    <tr>
+                                        <th>项目编号</th>
+                                        <th>项目名称</th>
+                                        <th>单位</th>
+                                        <th>单价</th>
+                                        <th>数量</th>
+                                        <th>金额</th>
+                                        <th>医嘱</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of form.chargeItems">
+                                        <td>{{item.chargeItem.channelData.id}}</td>
+                                        <td>{{item.chargeItem.name}}</td>
+                                        <td>{{item.chargeItem.unit}}</td>
+                                        <td>{{item.chargeItem.price}}</td>
+                                        <td>{{item.amount}}</td>
+                                        <td>{{item.total}}</td>
+                                        <td><button type="button" class="btn btn-primary" *ngIf="item.chargeItem.channelData.chargeItemType=='1'" (click)="adviceHangzhouModal.show(item.chargeItem)">
+                                            <i class="fa fa-check" *ngIf="item.chargeItem.advice"></i>
+                                            <span>填写</span></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span>总费用： {{hisData.total}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <button type="submit" class="btn btn-danger" (click)="fail('放弃上传')">放弃</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="upload()">上传</button>
+    
+                </div>
+            </div>
+        </div>
+        
+        <div *ngSwitchCase="'Uploaded'">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                杭州医保 预结算
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>个人信息</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="m-portlet__body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>姓名: {{patient?.p5}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>性别: {{config.xb[patient?.p6]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>出生日期: {{patient?.p8}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>个人编号: {{patient?.p1}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>身份证号: {{patient?.p4}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>单位名称: {{patient?.p3}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>医保卡号: {{patient?.p9}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>医疗待遇: {{config.yldy[patient?.p10]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>医疗证号: {{patient?.p11}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>人员类别: {{config.rylb[patient?.p34]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>当年帐户余额: {{patient?.p15}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>当年账户已用: {{patient?.p23}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>门诊起付标准累计: {{patient?.p25}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>历年账户余额: {{patient?.p16}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>历年账户已用: {{patient?.p24}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>费用明细</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <table class="table table-hover" *ngFor="let form of hisData.chargeItemForms">
+                                <thead>
+                                    <tr>
+                                        <th>项目编号</th>
+                                        <th>项目名称</th>
+                                        <th>单位</th>
+                                        <th>单价</th>
+                                        <th>数量</th>
+                                        <th>金额</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of form.chargeItems">
+                                        <td>{{item.chargeItem.channelData.id}}</td>
+                                        <td>{{item.chargeItem.name}}</td>
+                                        <td>{{item.chargeItem.unit}}</td>
+                                        <td>{{item.chargeItem.price}}</td>
+                                        <td>{{item.amount}}</td>
+                                        <td>{{item.total}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span>总费用： {{hisData.total}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <button type="submit" class="btn btn-danger" (click)="fail('放弃预结算')">放弃</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="preSettle()">预结算</button>
+    
+                </div>
+            </div>
+        </div>
+        
+        <div *ngSwitchCase="'PreSettled'">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                杭州医保 门诊结算
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>个人信息</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="m-portlet__body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>姓名: {{patient?.p5}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>性别: {{config.xb[patient?.p6]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>出生日期: {{patient?.p8}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>个人编号: {{patient?.p1}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>身份证号: {{patient?.p4}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>单位名称: {{patient?.p3}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>医保卡号: {{patient?.p9}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>医疗待遇: {{config.yldy[patient?.p10]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>医疗证号: {{patient?.p11}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>人员类别: {{config.rylb[patient?.p34]}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>当年帐户余额: {{patient?.p15}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>当年账户已用: {{patient?.p23}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span>门诊起付标准累计: {{patient?.p25}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>历年账户余额: {{patient?.p16}}</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <span>历年账户已用: {{patient?.p24}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>费用明细</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <table class="table table-hover" *ngFor="let form of hisData.chargeItemForms">
+                                <thead>
+                                    <tr>
+                                        <th>项目编号</th>
+                                        <th>项目名称</th>
+                                        <th>单位</th>
+                                        <th>单价</th>
+                                        <th>数量</th>
+                                        <th>金额</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of form.chargeItems">
+                                        <td>{{item.chargeItem.channelData.id}}</td>
+                                        <td>{{item.chargeItem.name}}</td>
+                                        <td>{{item.chargeItem.unit}}</td>
+                                        <td>{{item.chargeItem.price}}</td>
+                                        <td>{{item.amount}}</td>
+                                        <td>{{item.total}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span>总费用： {{hisData.total}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>预结算信息</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span>现金支付  {{settleResult?.p13}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>（自费： {{settleResult?.p38}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>  自理： {{settleResult?.p37}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>  自付： {{settleResult?.p14}}）</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span>个人账户</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>当年支付  {{settleResult?.p9}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>当年余额  {{settleResult?.p18}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <span>历年支付  {{settleResult?.p10}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>历年余额  {{settleResult?.p19}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span>医保账户</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>统筹基金支付  {{settleResult?.p34}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>本次起付标准  {{settleResult?.p35}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>起付标准累计  {{settleResult?.p24}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>自费  {{settleResult?.p16}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>（其中历年账户  {{settleResult?.p40}}）</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>自理  {{settleResult?.p15}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>（其中历年账户  {{settleResult?.p39}}）</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>自付  {{settleResult?.p41}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>（其中历年账户  {{settleResult?.p11}}）</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span>合计￥：{{settleResult?.p8}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <button type="submit" class="btn btn-danger" (click)="fail('放弃结算')">放弃</button>
+                    <button type="submit" class="btn btn-primary blue" (click)="settle()">结算</button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="state == 'Settled'">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text" [ngClass]="{'ybprint': printing}">
+                                杭州医保 结算完成
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="m-portlet__body">
+                    
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head" *ngIf="!printing">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>结算信息</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row ybhead" *ngIf="printing">
+                            <span>普通门诊收费明细</span>
+                        </div>
+                        <div class="m-portlet__body" *ngIf="printing">
+                            <div class="row ybprint ybborder">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr *ngFor="let item of uploadData; let i = index">
+                                            <td>{{config.sfxmdj[uploadResult.datas[i]?.p8]}}</td>
+                                            <td>{{item.p8}}</td>
+                                            <td>{{item.p11}}</td>
+                                            <td>{{item.p12.toFixed(2)}}</td>
+                                            <td>{{uploadResult.datas[i]?.p10*100}}%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row" style="height: 80px;"></div>
+                        </div>
+                        <div class="row ybhead" *ngIf="printing">
+                            <span>普通门诊分类支付表</span>
+                        </div>
+                        <div class="m-portlet__body" [ngClass]="{'ybprint ybborder': printing}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span>现金支付  {{settleResult?.p13}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>（自费： {{settleResult?.p38}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>  自理： {{settleResult?.p37}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>  自付： {{settleResult?.p14}}）</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span>个人账户</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>当年支付  {{settleResult?.p9}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>当年余额  {{settleResult?.p18}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    <span>历年支付  {{settleResult?.p10}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>历年余额  {{settleResult?.p19}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span>医保账户</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>统筹基金支付  {{settleResult?.p34}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>本次起付标准  {{settleResult?.p35}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>起付标准累计  {{settleResult?.p24}}</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>自费  {{settleResult?.p16}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>（其中历年账户  {{settleResult?.p40}}）</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>自理  {{settleResult?.p15}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>（其中历年账户  {{settleResult?.p39}}）</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span></span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>自付  {{settleResult?.p41}}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <span>（其中历年账户  {{settleResult?.p11}}）</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span>合计￥：{{settleResult?.p8}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <button type="submit" class="btn btn-primary blue" *ngIf="!printing" (click)="print()">打印</button>
+                </div>
+            </div>
+        </div>
+    
+        <div *ngIf="state == 'SettleFailed'">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                杭州医保 结算失败
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    {{failedMessage}}
+                </div>
+            </div>
+        </div>
+
+        <adviceHangzhouModal #adviceHangzhouModal></adviceHangzhouModal>
+    </div>

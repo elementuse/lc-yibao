@@ -1,0 +1,94 @@
+<div [ngSwitch]="state">
+    <div *ngSwitchCase="'Initial'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            青岛医保 门诊退费
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+
+                <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    <span>费用明细</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body">
+                        <table class="table table-hover" *ngFor="let form of hisData.chargeItemForms">
+                            <thead>
+                                <tr>
+                                    <th>项目名称</th>
+                                    <th>计价单位</th>
+                                    <th>单价</th>
+                                    <th>数量</th>
+                                    <th>金额</th>
+                                    <th>折扣%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of form.chargeItems">
+                                    <td>{{item.chargeItem.name}}</td>
+                                    <td>{{item.chargeItem.channelData.mer_pack}}</td>
+                                    <td>{{item.chargeItem.price}}</td>
+                                    <td>{{item.amount}}</td>
+                                    <td>{{item.total - item.discount}}</td>
+                                    <td>{{item.ratio}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span>总费用： {{hisData.total}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary blue" *ngIf="state == 'Initial'" (click)="refund()">退费</button>
+
+            </div>
+        </div>
+    </div>
+    <div *ngSwitchCase="'Settled'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            青岛医保 退费完成
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                    退费操作成功
+            </div>
+        </div>
+    </div>
+
+    <div *ngSwitchCase="'SettleFailed'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            青岛医保 退费失败
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                {{failedMessage}}
+            </div>
+        </div>
+    </div>
+</div>

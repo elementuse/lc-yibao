@@ -1,0 +1,72 @@
+<div bsModal #registerDiagnoseModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #itemNewForm="ngForm" role="form" novalidate class="form-validation">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>注册诊断</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" attr.aria-label="关闭">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group" *ngIf="useChannelObjectDirectory">
+                                <label for="channelselect" class="control-label">医保中心诊断</label>
+                                <select id="channelselect" class="form-control select2" required></select>
+                                <input type="hidden" name="channelObjectId" [(ngModel)]="channelObjectId" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="!useChannelObjectDirectory">
+                            <div class="form-group">
+                                <label for="channelid" class="control-label">医保中心诊断编号</label>
+                                <input id="channelid" class="form-control" [(ngModel)]="channelObjectId" name="channelid" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="!useChannelObjectDirectory">
+                            <div class="form-group">
+                                <label for="channelname" class="control-label">医保中心诊断名称</label>
+                                <input id="channelname" class="form-control" [(ngModel)]="channelObjectName" name="channelname" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-scrollable" *ngIf="fields.length">
+                        <table class="table table-hover dataTable" id="table1">
+                            <thead>
+                                <tr>
+                                    <th style="display:none">filedName</th>
+                                    <th>字段名</th>
+                                    <th style="display:none">字段类型code</th>
+                                    <th>字段类型</th>
+                                    <th>值</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let field of fields">
+                                    <td>{{(field.displayName&&field.displayName.length>0)?field.displayName:field.fieldName}}</td>
+                                    <td>{{field.fieldTypeName}}</td>
+                                    <td>
+                                        <input type="text" [name]="field.fieldName" class="form-control" [(ngModel)]="field.value" placeholder="{{field.note}}" [disabled]="field.source==0 && useChannelObjectDirectory"
+                                            *ngIf="field.fieldType!=3" [required]="field.required"/>
+                                        <select [(ngModel)]="field.value" name="lookup" class="form-control" *ngIf="field.fieldType==3" [disabled]="field.source==0 && useChannelObjectDirectory" [required]="field.required">
+                                            <option *ngFor="let item of field.lookup" value="{{item.value}}">{{item.name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="close()">关闭</button>
+                    <button type="button" class="btn btn-primary" [disabled]="!itemNewForm.form.valid" (click)="save()">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

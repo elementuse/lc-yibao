@@ -1,0 +1,75 @@
+<div bsModal #adviceHangzhouModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #itemCreateForm="ngForm" role="form" novalidate class="form-validation">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>填写医嘱：{{medical_name}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" attr.aria-label="关闭">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="p20" class="control-label">开方数量</label>
+                                <input name="p20" type="number" class="form-control" [(ngModel)]="p20" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="p21" class="control-label">开方单价</label>
+                                <input name="p21" type="number" class="form-control" [(ngModel)]="p21" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="p22" class="control-label">开方单位</label>
+                                <input name="p22" type="text" class="form-control" [(ngModel)]="p22" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="p24" class="control-label">每次用量</label><span style="color: red;">*</span>
+                                <input name="p24" type="number" class="form-control" [(ngModel)]="p24" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="p25" class="control-label">使用频次</label><span style="color: red;">*</span>
+                                <select name="p25" class="form-control" [(ngModel)]="p25" required>
+                                    <option *ngFor="let item of config.sypc" value="{{item.code}}">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="p26" class="control-label">执行天数</label>
+                                <input name="p26" type="number" class="form-control" [(ngModel)]="p26" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="p23" class="control-label">用法（给药途径）</label>
+                                <input name="p23" type="text" class="form-control" [(ngModel)]="p23" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="!itemCreateForm.form.valid">保存</button>
+                    <button type="button" class="btn btn-primary" (click)="close()">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

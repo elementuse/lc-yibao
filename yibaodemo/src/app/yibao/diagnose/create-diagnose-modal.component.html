@@ -1,0 +1,67 @@
+<div bsModal #createDiagnoseModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #itemCreateForm="ngForm" role="form" novalidate class="form-validation">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>添加诊断</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" attr.aria-label="关闭">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="channelid" class="control-label">诊断编号</label>
+                                <input id="channelid" class="form-control" [(ngModel)]="channelObjectId" required maxlength="50" name="channelid" [disabled]='canEdit'
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="channelname" class="control-label">诊断名称</label>
+                                <input id="channelname" class="form-control" [(ngModel)]="channelObjectName" required maxlength="50" name="channelname" [disabled]='canEdit'
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-scrollable" *ngIf="fields.length">
+                        <table class="table table-hover dataTable" id="table1">
+                            <thead>
+                                <tr>
+                                    <th style="display:none">filedName</th>
+                                    <th>字段名</th>
+                                    <th style="display:none">字段类型code</th>
+                                    <th>字段类型</th>
+                                    <th>值</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let field of fields">
+                                    <td>{{(field.displayName&&field.displayName.length>0)?field.displayName:field.fieldName}}</td>
+                                    <td>{{field.fieldTypeName}}</td>
+                                    <td>
+                                        <input type="text" name="note" class="form-control" [(ngModel)]="field.value" placeholder="{{field.note}}" *ngIf="field.fieldType!=3"
+                                            [disabled]='canEdit' />
+                                        <select class="form-control" name="lookup" [(ngModel)]="field.value" *ngIf="field.fieldType==3" [disabled]='canEdit'>
+                                            <option *ngFor="let item of field.lookup" value="{{item.value}}">{{item.name}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button *ngIf="!canEdit" type="button" class="btn btn-primary" (click)="save()" [buttonBusy]="saving" [busyText]="text" [disabled]="!itemCreateForm.form.valid">保存</button>
+                    <button *ngIf="canEdit" type="button" class="btn btn-primary" (click)="close()">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

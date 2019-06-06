@@ -1,0 +1,231 @@
+<div [ngSwitch]="state">
+    <div *ngSwitchCase="'Initial'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            忻州医保 门诊退费
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    <span>个人信息</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>姓名: {{patient?.xm}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>性别: {{config.xb[patient?.xb]}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>出生日期: {{patient?.csrq}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>身份证号码: {{patient?.sfzhm}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>卡号: {{patient?.kh}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>个人编号: {{patient?.grbh}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>社保机构编号: {{patient?.sbjgbh}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>单位名称: {{patient?.dwmc}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>医疗人员类别: {{patient?.ylrylb}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>人群类别: {{config.rqlb[patient?.rqlb]}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>异地标志: {{config.ydbz[patient?.ydbz]}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>账户余额: {{patient?.ye}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    <span>费用明细</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body">
+                        <table class="table table-hover" *ngFor="let form of hisData.chargeItemForms">
+                            <thead>
+                                <tr>
+                                    <th>项目编号</th>
+                                    <th>项目名称</th>
+                                    <th>单位</th>
+                                    <th>单价</th>
+                                    <th>数量</th>
+                                    <th>金额</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of form.chargeItems">
+                                    <td>{{item.insurance?item.chargeItem.channelData.id:'[无医保对应项，不参与医保结算]'}}</td>
+                                    <td>{{item.chargeItem.name}}</td>
+                                    <td>{{item.chargeItem.unit}}</td>
+                                    <td>{{item.chargeItem.price}}</td>
+                                    <td>{{item.amount}}</td>
+                                    <td>{{item.total}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span>总费用： {{hisData.total}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                    <div class="m-portlet__head">
+                        <div class="m-portlet__head-caption">
+                            <div class="m-portlet__head-title">
+                                <h3 class="m-portlet__head-text">
+                                    <span>结算信息</span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>病人负担金额: {{settleResult?.brfdje}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>医院负担金额: {{settleResult?.yyfdje}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>医保负担金额: {{settleResult?.ybfdje}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>个人账户支付: {{settleResult?.grzhzf}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>医疗补助金额: {{settleResult?.ylbzje}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>本次结算费用总额: {{settleResult?.zje}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>本次统筹支付: {{settleResult?.tczf}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>本次大额支付: {{settleResult?.dezf}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>本次公务员补助: {{settleResult?.gwybz}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>本次财政列支: {{settleResult?.czlz}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>暂缓支付: {{settleResult?.zhzf}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>医疗减免金额: {{settleResult?.yljmje}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>累计统筹支付: {{settleResult?.ljtczf}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>累计大额支付: {{settleResult?.ljdezf}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>累计门诊额度: {{settleResult?.ljmzed}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span>累积个人支付: {{settleResult?.ljgrzf}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>其他统筹支付: {{settleResult?.qttczf}}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span>账户余额: {{settleResult?.zhye}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary blue" *ngIf="state == 'Initial'" (click)="refund()">退费</button>
+
+            </div>
+        </div>
+    </div>
+    <div *ngSwitchCase="'Settled'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            忻州医保 退费完成
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                退费操作成功
+            </div>
+        </div>
+    </div>
+
+    <div *ngSwitchCase="'SettleFailed'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            忻州医保 退费失败
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                {{failedMessage}}
+            </div>
+        </div>
+    </div>
+</div>

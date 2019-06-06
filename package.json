@@ -4,7 +4,11 @@
   "description": "A blank schematics",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && jasmine src/**/*_spec.js"
+    "clean": "git checkout HEAD -- yibaodemo && git clean -f -d yibaodemo",
+    "link:schematic": "yarn link && cd yibaodemo && yarn link \"lc-yibao\"",
+    "yibaodemo:yibao": "cd yibaodemo && ng g lc-yibao:yibao",
+    "test": "yarn clean && yarn yibaodemo:yibao && yarn test:yibaodemo",
+    "test:yibaodemo": "cd yibaodemo && yarn lint && yarn test && yarn build"
   },
   "keywords": [
     "schematics"

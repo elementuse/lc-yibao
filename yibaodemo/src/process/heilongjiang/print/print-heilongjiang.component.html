@@ -1,0 +1,107 @@
+<div id="main">
+    <!-- <div class="col-lg-12"> -->
+        <div class="container" style="font-size:20px">
+            <div class="row" style="margin-top:20px">
+                <div class="col-lg-2 col-md-2 col-xs-2"></div>
+                <div class="col-lg-9 col-md-9 col-xs-9 text-right">
+                    <h3>{{receipt[0]?.page1[0].p10}}</h3>
+                </div>
+                <!-- <div class="col-lg-2 col-xs-2"></div> -->
+            </div>
+            <div style="margin-top:50px">
+                <!-- <div class="col-lg-1 col-md-1 col-xs-1">
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-4">
+                    <label>{{receipt[0]?.page1[0].p13}}</label>
+                </div>
+                <div class="col-lg-4  col-md-4 col-xs-4">
+                    <label>{{receipt[0]?.page1[0].p12}}</label>
+                </div>
+                <div class="col-lg-3 col-md-3 col-xs-3">
+                </div> -->
+
+                <label style="width:10%">{{receipt[0]?.page1[0].p13}}</label> <label style="margin-left:20%">{{receipt[0]?.page1[0].p12}}</label>
+            </div>
+            <div style="margin-top:10px">
+                <!-- <div class="col-lg-1 col-xs-1">
+                </div>
+                <div class="col-lg-6 col-xs-6">
+                    <label>{{receipt[0]?.page1[0].p3}}</label>
+                </div>
+                <div class="col-lg-3 col-xs-3">
+                    <label>{{receipt[0]?.page1[0].p5}}</label>
+                </div>
+                <div class="col-lg-2 col-xs-2">
+                    <label>{{receipt[0]?.page1[0].p6}}</label>
+                </div> -->
+                <label style="width:10%">{{receipt[0]?.page1[0].p3}}</label>
+                <label style="margin-left:40%;width:10%">{{receipt[0]?.page1[0].p5}}</label>
+                <label style="float:right;margin-right:15%;width:10%">{{receipt[0]?.page1[0].p6}}</label>
+            </div>
+            <div style="margin-top:10px">
+                <!-- <div class="col-lg-1 col-xs-1">
+                </div>
+                <div class="col-lg-6 col-xs-6">
+                    <label>{{receipt[0]?.page1[0].p2}}</label>
+                </div>
+                <div class="col-lg-3 col-xs-3">
+                    <label>{{receipt[0]?.page1[0].p8}}</label>
+                </div>
+                <div class="col-lg-2 col-xs-2">
+                    <label>{{receipt[0]?.page1[0].p10}}</label>
+                </div> -->
+                <label style="width:10%">{{receipt[0]?.page1[0].p2}}</label>
+                <label style="margin-left:40%;width:10%">{{receipt[0]?.page1[0].p8}}</label>
+                <label style="float:right;margin-right:15%;width:10%">{{receipt[0]?.page1[0].p10}}</label>
+            </div>
+            <div class="row" style="margin-top:50px">
+                <!-- <div class="col-lg-3 col-xs-3">
+                </div>
+                <div class="col-lg-5 col-xs-5 text-left">
+                    <label>{{rmb}}</label>
+                </div>
+                <div class="col-lg-4 col-xs-4 text-left">
+                    <label>{{receipt[0]?.page1[0].p14}}</label>
+                </div> -->
+                <label style="margin-left:15%;width:100px">{{rmb}}</label>
+                <label style="margin-left:50%;width:100px">{{receipt[0]?.page1[0].p14}}</label>
+            </div>
+            <div style="margin-top:10px">
+                <!-- <div class="col-lg-1 col-xs-1">
+                </div>
+                <div class="col-lg-6 col-xs-6">
+                    <label>个人账户支付：{{receipt[0]?.page1[0].p18}}</label>
+                </div>
+                <div class="col-lg-5 col-xs-5">
+                    <label>公务员补助支付：{{receipt[0]?.page1[0].p20}}</label>
+                </div> -->
+                <label style="width:28%">个人账户支付：{{receipt[0]?.page1[0].p18}}</label>
+                <label style="margin-left:30%;width:28%">公务员补助支付：{{receipt[0]?.page1[0].p20}}</label>
+            </div>
+            <div style="margin-top:10px">
+                <!-- <div class="col-lg-1 col-xs-1">
+                </div>
+                <div class="col-lg-6 col-xs-6">
+                    <label>统筹金支付：{{receipt[0]?.page1[0].p19}}</label>
+                </div>
+                <div class="col-lg-5 col-xs-5">
+                    <label>大额补助支付：{{receipt[0]?.page1[0].p21}}</label>
+                </div> -->
+                <label style="width:28%">统筹金支付：{{receipt[0]?.page1[0].p19}}</label>
+                <label style="margin-left:30%;width:28%">大额补助支付：{{receipt[0]?.page1[0].p21}}</label>
+            </div>
+            <div style="margin-top:10px">
+                <!-- <div class="col-lg-1 col-xs-1">
+                </div>
+                <div class="col-lg-6 col-xs-6">
+                    <label>个人现金支付：{{receipt[0]?.page1[0].p17}}</label>
+                </div> -->
+                <label>个人现金支付：{{receipt[0]?.page1[0].p17}}</label>
+            </div>
+            <div style="margin-top:20px">
+                <label style="width:28%">结算前个人账户余额：{{receipt[0]?.page1[0].p22}}</label>
+                <label style="margin-left:30%;width:28%">结算后个人账户余额：{{receipt[0]?.page1[0].p23}}</label>            </div>
+        </div>
+         <!-- </div> -->
+         <!-- <button type="submit" class="btn btn-primary blue" (click)="printSettlement()">打印收据</button> -->
+</div>

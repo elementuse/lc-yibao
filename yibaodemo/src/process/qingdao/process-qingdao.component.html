@@ -1,0 +1,130 @@
+<div [ngSwitch]="state">
+    <div *ngSwitchCase="'Initial'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            青岛医保 审核
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                    <div class="m-portlet m-portlet--tabs m-portlet--primary m-portlet--head-solid-bg m-portlet--head-sm">
+                        <div class="m-portlet__head">
+                            <div class="m-portlet__head-caption">
+                                <div class="m-portlet__head-title">
+                                    <h3 class="m-portlet__head-text">
+                                        <span>费用明细</span>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-portlet__body">
+                            <table class="table table-hover" *ngFor="let form of hisData.chargeItemForms">
+                                <thead>
+                                    <tr>
+                                        <th>所属类型</th>
+                                        <th>项目名称</th>
+                                        <th>计价单位</th>
+                                        <th>单价</th>
+                                        <th>数量</th>
+                                        <th>金额</th>
+                                        <th>折扣%</th>
+                                        <th>药品信息</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of form.chargeItems">
+                                        <td>
+                                            <select [(ngModel)]="item.chargeItem.channelData.mer_type">
+                                                <optgroup label="药品销售类">
+                                                    <option value="01">处方药</option>
+                                                    <option value="02">非处方药</option>
+                                                    <option value="03">中药饮片</option>
+                                                    <option value="04">中药材</option>
+                                                    <option value="05">中成药</option>
+                                                    <option value="06">保健品</option>
+                                                    <option value="07">计生用品</option>
+                                                    <option value="08">医疗器械</option>
+                                                    <option value="09">非药品</option>
+                                                    <option value="10">其他医药用品</option>
+                                                    <option value="11">备用1</option>
+                                                    <option value="12">备用2</option>
+                                                </optgroup>
+                                                <optgroup label="服务类收费">
+                                                    <option value="21">注射费</option>
+                                                    <option value="22">治疗费</option>
+                                                    <option value="23">床位费</option>
+                                                    <option value="24">材料费</option>
+                                                    <option value="25">检查费</option>
+                                                    <option value="26">其他诊疗服务收费</option>
+                                                    <option value="27">备用1</option>
+                                                    <option value="28">备用2</option>
+                                                </optgroup>
+                                            </select>
+                                        </td>
+                                        <td>{{item.chargeItem.name}}</td>
+                                        <td><input type="text" style="width: 60px;" [(ngModel)]="item.chargeItem.channelData.mer_pack"></td>
+                                        <td>{{item.chargeItem.price}}</td>
+                                        <td>{{item.amount}}</td>
+                                        <td>{{item.total - item.discount}}</td>
+                                        <td>{{item.ratio}}</td>
+                                        <td><button type="button" class="btn btn-primary" (click)="medicineModal.show(item.chargeItem)">
+                                            <i class="fa fa-check" *ngIf="item.chargeItem.channelData.mer_name || item.chargeItem.channelData.comm_name"></i>
+                                            <span>填写</span></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span>总费用： {{hisData.total}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                <button type="submit" class="btn btn-danger" (click)="fail('放弃医保审核')">放弃</button>
+                <button type="submit" class="btn btn-primary blue" (click)="audit()">审核</button>
+
+            </div>
+        </div>
+    </div>
+    <div *ngSwitchCase="'Settled'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            青岛医保 审核已提交
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                流水号：{{auditResult.tranID}}
+            </div>
+        </div>
+    </div>
+
+    <div *ngSwitchCase="'SettleFailed'">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            青岛医保 审核失败
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                {{failedMessage}}
+            </div>
+        </div>
+    </div>
+    
+    <medicineModal #medicineModal></medicineModal>
+</div>

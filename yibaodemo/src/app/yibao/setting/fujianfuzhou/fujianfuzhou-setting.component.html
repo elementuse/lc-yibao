@@ -1,0 +1,29 @@
+<div [@routerTransition]>
+    <div class="m-subheader">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>医保</span>
+                </h3>
+                <span class="m-section__sub">
+                    福州医保配置
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form #settingForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                    <div class="form-group">
+                        <label>医疗机构编码 *</label>
+                        <input #hospitalCodeInput="ngModel" class="form-control" type="text" name="hospitalCode" [(ngModel)]="hospitalCode" required
+                            maxlength="64">
+                        <validation-messages [formCtrl]="hospitalCodeInput"></validation-messages>
+                    </div>
+                    <button type="submit" class="btn btn-primary" [disabled]="!settingForm.form.valid" [buttonBusy]="saving" [busyText]="savingtext"><i class="fa fa-save"></i> <span>保存</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

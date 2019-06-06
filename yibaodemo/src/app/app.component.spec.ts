@@ -1,27 +1,32 @@
+/* tslint:disable:no-unused-variable */
+
+import { APP_BASE_HREF } from '@angular/common';
 import { TestBed, async } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  }));
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
-  it(`should have as title 'yibaodemo'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('yibaodemo');
-  }));
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to yibaodemo!');
-  }));
+import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
+import { RootModule } from 'root.module';
+import { AppComponent } from '@app/app.component';
+
+export function getRemoteServiceBaseUrl(): string {
+    return 'http://localhost:22742';
+}
+
+describe('App: Insurance', () => {
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [
+                RootModule
+            ],
+            providers: [
+                { provide: API_BASE_URL, useValue: getRemoteServiceBaseUrl() },
+                { provide: APP_BASE_HREF, useValue: '/' }
+            ]
+        }).compileComponents();
+    }));
+
+    it('should create the app', async(() => {
+        const fixture = TestBed.createComponent(AppComponent);
+        const app = fixture.debugElement.componentInstance;
+        expect(app).toBeTruthy();
+    }));
+
 });

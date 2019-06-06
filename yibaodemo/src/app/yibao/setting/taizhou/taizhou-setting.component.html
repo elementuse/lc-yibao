@@ -1,0 +1,58 @@
+<div [@routerTransition]>
+        <div class="m-subheader">
+            <div class="d-flex align-items-center">
+                <div class="mr-auto">
+                    <h3 class="m-subheader__title m-subheader__title--separator">
+                        <span>医保</span>
+                    </h3>
+                    <span class="m-section__sub">
+                        台州医保配置
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="m-content">
+            <div class="m-portlet m-portlet--mobile">
+                <div class="m-portlet__body">
+                    <form #settingForm="ngForm" novalidate (ngSubmit)="save()" autocomplete="off">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>医疗机构编码 *</label>
+                                    <input #hospitalCodeInput="ngModel" class="form-control" type="text" name="hospitalCode" [(ngModel)]="hospitalCode" required
+                                        maxlength="64">
+                                    <validation-messages [formCtrl]="hospitalCodeInput"></validation-messages>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>医疗机构行政区划</label>
+                                    <input #hospitalAreaInput="ngModel" class="form-control" type="text" name="hospitalArea" [(ngModel)]="hospitalArea"
+                                        maxlength="64">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>医疗机构等级</label>
+                                    <select name="hospitalLevelInput" class="form-control" [(ngModel)]="hospitalLevel">
+                                        <option *ngFor="let item of config.hospitalLevel" value="{{item.code}}">{{item.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>医疗机构类型</label>
+                                    <select name="hospitalTypeInput" class="form-control" [(ngModel)]="hospitalType">
+                                        <option *ngFor="let item of config.hospitalType" value="{{item.code}}">{{item.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" [disabled]="!settingForm.form.valid" [buttonBusy]="saving" [busyText]="savingtext"><i class="fa fa-save"></i> <span>保存</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

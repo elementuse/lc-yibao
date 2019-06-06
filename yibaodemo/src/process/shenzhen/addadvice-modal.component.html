@@ -1,0 +1,91 @@
+<div bsModal #addAdviceModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #itemCreateForm="ngForm" role="form" novalidate class="form-validation">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span>填写医嘱：{{medical_name}}</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" attr.aria-label="关闭">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="use_day" class="control-label">用药天数</label>
+                                <input name="use_day" type="number" class="form-control" [(ngModel)]="use_day" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="single_dose_number" class="control-label">单次用药量</label>
+                                <input name="single_dose_number" type="number" class="form-control" [(ngModel)]="single_dose_number" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="single_dose_unit" class="control-label">单次用药剂量单位</label>
+                                <select name="single_dose_unit" class="form-control" [(ngModel)]="single_dose_unit" required>
+                                    <option *ngFor="let item of config.doseUnit" value="{{item.code}}">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="dose_day" class="control-label">药量天数</label>
+                                <input name="dose_day" type="number" class="form-control" [(ngModel)]="dose_day" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="single_take_number" class="control-label">单次服用药品数量</label>
+                                <input name="single_take_number" type="number" class="form-control" [(ngModel)]="single_take_number" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="single_take_unit" class="control-label">单次服用药品数量单位</label>
+                                <select name="single_take_unit" class="form-control" [(ngModel)]="single_take_unit" required>
+                                    <option *ngFor="let item of config.quantityUnit" value="{{item.code}}">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="take_frequence" class="control-label">服用频次</label>
+                                <input name="take_frequence" type="text" class="form-control" [(ngModel)]="take_frequence" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="take_medical_number" class="control-label">取药总量</label>
+                                <input name="take_medical_number" type="number" class="form-control" [(ngModel)]="take_medical_number" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="take_medical_unit" class="control-label">取药总量剂量单位</label>
+                                <select name="take_medical_unit" class="form-control" [(ngModel)]="take_medical_unit" required>
+                                    <option *ngFor="let item of config.doseUnit" value="{{item.code}}">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="!itemCreateForm.form.valid">保存</button>
+                    <button type="button" class="btn btn-primary" (click)="close()">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
