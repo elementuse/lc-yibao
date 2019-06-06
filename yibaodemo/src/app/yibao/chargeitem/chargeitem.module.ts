@@ -9,9 +9,6 @@ import { FormsModule } from '@angular/forms';
 import { UtilsModule } from '@shared/utils/utils.module';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/primeng';
-import { JingdezhenImportModalComponent } from '@app/yibao/chargeitem/jingdezhen/jingdezhen-importmodal.component';
-import { HangzhouImportModalComponent } from '@app/yibao/chargeitem/hangzhou/hangzhou-importmodal.component';
-import { ChangxingImportModalComponent } from '@app/yibao/chargeitem/changxing/changxing-importmodal.component';
 import { CalendarModule } from 'primeng/calendar';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ImportErrorModalComponent } from './importError/import-error-modal.component';
@@ -22,9 +19,6 @@ import { TaizhouImportModalComponent } from '@app/yibao/chargeitem/taizhou/taizh
         ChargeitemComponent,
         RegisterItemComponent,
         CreateItemComponent,
-        JingdezhenImportModalComponent,
-        HangzhouImportModalComponent,
-        ChangxingImportModalComponent,
         TaizhouImportModalComponent,
         ImportErrorModalComponent
     ],

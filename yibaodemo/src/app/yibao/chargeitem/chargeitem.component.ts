@@ -10,9 +10,6 @@ import { RegisterItemComponent } from '@app/yibao/chargeitem/register-item-modal
 import { AppSessionService } from '@shared/common/session/app-session.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription, Observable } from "rxjs/Rx";
-import { JingdezhenImportModalComponent } from '@app/yibao/chargeitem/jingdezhen/jingdezhen-importmodal.component';
-import { HangzhouImportModalComponent } from '@app/yibao/chargeitem/hangzhou/hangzhou-importmodal.component';
-import { ChangxingImportModalComponent } from '@app/yibao/chargeitem/changxing/changxing-importmodal.component';
 import { DatePipe } from '@angular/common';
 import { HeilongjiangYibaoService } from '@app/yibao/yibao.service';
 import { ChannelObjectServiceProxy, QueryChannelObjectInput, QueryChannelObjectInputState, GetImportInfoInput, RegisteredChannelObjectInput, ImportInputOfRegisteredChannelObjectInput, GetDefinitionInput, QuerySyncToYibaoInput, ChangeStateInput } from '@shared/service-proxies/service-proxies';
@@ -34,9 +31,6 @@ export class ChargeitemComponent extends AppComponentBase implements OnInit {
 
   @ViewChild('createItemModal') createItemComponent: CreateItemComponent;
   @ViewChild('registerItemModal') registerItemComponent: RegisterItemComponent;
-  @ViewChild('jingdezhenImportModal') jingdezhenImportModalComponent: JingdezhenImportModalComponent;
-  @ViewChild('hangzhouImportModal') hangzhouImportModalComponent: HangzhouImportModalComponent;
-  @ViewChild('changxingImportModal') changxingImportModalComponent: ChangxingImportModalComponent;
   @ViewChild('taizhouImportModal') taizhouImportModalComponent: TaizhouImportModalComponent;
   @ViewChild('importErrorModal') importErrorModalComponent: ImportErrorModalComponent;
   @ViewChild('dataTable') dataTable: Table;
@@ -159,18 +153,6 @@ export class ChargeitemComponent extends AppComponentBase implements OnInit {
 
 
   import(): void {
-    if (this.channel == 'Jingdezhen') {
-      this.jingdezhenImportModalComponent.show();
-      return;
-    }
-    if (this.channel == 'Hangzhou') {
-      this.hangzhouImportModalComponent.show();
-      return;
-    }
-    if (this.channel == 'Changxing') {
-      this.changxingImportModalComponent.show();
-      return;
-    }
     if (this.channel == 'Taizhou') {
       this.taizhouImportModalComponent.show();
       return;

@@ -9,19 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { UtilsModule } from '@shared/utils/utils.module';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/primeng';
-import { ShenzhenImportDiagnoseComponent } from '@app/yibao/diagnose/shenzhen/shenzhen-importdiagnose.component';
 import { CalendarModule } from 'primeng/calendar';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { ChangxingImportDiagnoseComponent } from '@app/yibao/diagnose/changxing/changxing-importdiagnose.component';
-import { HangzhouImportDiagnoseComponent } from '@app/yibao/diagnose/hangzhou/hangzhou-importdiagnose.component';
 @NgModule({
     declarations: [
         DiagnoseComponent,
         RegisterDiagnoseComponent,
-        CreateDiagnoseComponent,
-        ShenzhenImportDiagnoseComponent,
-        ChangxingImportDiagnoseComponent,
-        HangzhouImportDiagnoseComponent
+        CreateDiagnoseComponent
     ],
     imports: [
         CommonModule,

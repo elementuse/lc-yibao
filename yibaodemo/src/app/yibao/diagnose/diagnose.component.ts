@@ -11,10 +11,7 @@ import { AppSessionService } from '@shared/common/session/app-session.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { DatePipe } from '@angular/common';
 import { ChannelObjectServiceProxy, QueryChannelObjectInput, QueryChannelObjectInputState } from '@shared/service-proxies/service-proxies';
-import { ShenzhenImportDiagnoseComponent } from '@app/yibao/diagnose/shenzhen/shenzhen-importdiagnose.component';
 import { ChannelObjectStateState } from '@shared/AppEnums';
-import { ChangxingImportDiagnoseComponent } from '@app/yibao/diagnose/changxing/changxing-importdiagnose.component';
-import { HangzhouImportDiagnoseComponent } from '@app/yibao/diagnose/hangzhou/hangzhou-importdiagnose.component';
 
 
 @Component({
@@ -26,9 +23,6 @@ export class DiagnoseComponent extends AppComponentBase implements OnInit {
 
   @ViewChild('createDiagnoseModal') createDiagnoseComponent: CreateDiagnoseComponent;
   @ViewChild('registerDiagnoseModal') registerDiagnoseComponent: RegisterDiagnoseComponent;
-  @ViewChild('shenzhenImportDiagnoseModal') shenzhenImportDiagnoseModal: ShenzhenImportDiagnoseComponent;
-  @ViewChild('changxingImportDiagnoseModal') changxingImportDiagnoseModal: ChangxingImportDiagnoseComponent;
-  @ViewChild('hangzhouImportDiagnoseModal') hangzhouImportDiagnoseModal: HangzhouImportDiagnoseComponent;
 
   filters: {
     keyword: string,
@@ -118,15 +112,6 @@ export class DiagnoseComponent extends AppComponentBase implements OnInit {
 
 
   import(): void {
-    if (this.channel == 'ShenzhenYibao') {
-      this.shenzhenImportDiagnoseModal.show();
-    }
-    else if (this.channel == "Changxing") {
-      this.changxingImportDiagnoseModal.show();
-    }
-    else if (this.channel == 'Hangzhou') {
-      this.hangzhouImportDiagnoseModal.show();
-    }
   }
 
   showModal(): void {
