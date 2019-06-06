@@ -1,0 +1,11 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "Add yibao channel to insurance.",
+      "factory": "./yibao/index",
+      "schema": "./yibao/schema.json",
+      "aliases": ["yb"]
+    }
+  }
+}
