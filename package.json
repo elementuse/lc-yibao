@@ -6,9 +6,10 @@
     "build": "tsc -p tsconfig.json",
     "clean": "git checkout HEAD -- yibaodemo && git clean -f -d yibaodemo",
     "link:schematic": "yarn link && cd yibaodemo && yarn link \"lc-yibao\"",
-    "yibaodemo:yibao": "cd yibaodemo && ng g lc-yibao:yibao",
-    "test": "yarn clean && yarn yibaodemo:yibao && yarn test:yibaodemo",
-    "test:yibaodemo": "cd yibaodemo && yarn lint && yarn test && yarn build"
+    "yibaodemo:yibao": "cd yibaodemo && ng g lc-yibao:yibao test 测试",
+    "yibaodemo:setting": "cd yibaodemo && ng g lc-yibao:setting test 测试",
+    "test": "yarn build && yarn clean && yarn yibaodemo:setting",
+    "test:yibaodemo": "yarn test && ng serve"
   },
   "keywords": [
     "schematics"
@@ -20,9 +21,13 @@
     "@angular-devkit/core": "^8.0.1",
     "@angular-devkit/schematics": "^8.0.1",
     "@angular/cdk": "^8.0.0",
+    "@schematics/angular": "^8.0.1",
     "@types/jasmine": "^3.3.9",
     "@types/node": "^8.0.31",
     "jasmine": "^3.3.1",
     "typescript": "~3.4.3"
+  },
+  "devDependencies": {
+    "tslint": "^5.17.0"
   }
 }
