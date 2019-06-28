@@ -11,8 +11,6 @@ import { addComponentIntoRouteMoudle } from '../utils/add-routemodule';
 export default function(_options: Schema): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     setupOptions(_options, tree);
-
-    console.log(_options);
     
     const templateSource = apply(url('./files'), [
       template({
