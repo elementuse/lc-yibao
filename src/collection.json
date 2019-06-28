@@ -12,6 +12,12 @@
       "factory": "./setting/index",
       "schema": "./setting/schema.json",
       "aliases": ["st"]
+    },
+    "process": {
+      "description": "Add process to yibao.",
+      "factory": "./process/index",
+      "schema": "./process/schema.json",
+      "aliases": ["p"]
     }
   }
 }
