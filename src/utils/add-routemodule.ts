@@ -1,16 +1,15 @@
-import { Tree, SchematicsException, Rule, DirEntry } from "@angular-devkit/schematics";
+import { Tree, SchematicsException, Rule } from "@angular-devkit/schematics";
 import { ModuleOptions, buildRelativePath } from "../schematics-angular-utils/find-module";
 import * as ts from 'typescript';
 import { insertImport } from "../schematics-angular-utils/route-utils";
 import { getSourceNodes } from "../schematics-angular-utils/ast-utils";
-import { Change, InsertChange, NoopChange } from "../schematics-angular-utils/change";
-import { constructDestinationPath, findFileByName } from "./find-file";
-import { strings, normalize, join } from '@angular-devkit/core';
+import { Change, InsertChange } from "../schematics-angular-utils/change";
+import { findFileByName } from "./find-file";
+import { strings } from '@angular-devkit/core';
 
 
 const classify = strings.classify;
 const dasherize = strings.dasherize;
-const camelize = strings.camelize;
 
 export class AddRouteModuleContext {
     moduleFilePath: string;
@@ -118,16 +117,4 @@ function findNodeByPath(node: ts.Node, searchPath: ts.SyntaxKind[] ) {
         children = next.getChildren();
     }
     return next;
-}
-
-function showTree(node: ts.Node, depth: number = 0): void {
-    let indent = ''.padEnd(depth*4, ' ');
-    console.log(indent + ts.SyntaxKind[node.kind]);
-    if (node.getChildCount() === 0) {
-        console.log(indent + '    Text: ' + node.getText());
-    }
-
-    for(let child of node.getChildren()) {
-        showTree(child, depth+1);
-    }
 }
