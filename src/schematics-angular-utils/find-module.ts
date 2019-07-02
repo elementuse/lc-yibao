@@ -59,11 +59,12 @@ export function findModule(host: Tree, generateDir: string): Path {
 
   const moduleRe = /\.module\.ts$/;
   const routingModuleRe = /-routing\.module\.ts/;
+  const serviceModuleRe = /-service\.module\.ts/;
 
   while (dir) {
     console.log('dir ', dir.path);
 
-    const matches = dir.subfiles.filter(p => moduleRe.test(p) && !routingModuleRe.test(p));
+    const matches = dir.subfiles.filter(p => moduleRe.test(p) && !routingModuleRe.test(p) && !serviceModuleRe.test(p));
 
     if (matches.length == 1) {
       return join(dir.path, matches[0]);

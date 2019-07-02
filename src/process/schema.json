@@ -1,0 +1,73 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "id": "lc-yibao",
+    "title": "process",
+    "type": "object",
+    "properties": {
+      "project": {
+        "type": "string",
+        "description": "The name of the project.",
+        "$default": {
+          "$source": "projectName"
+        }
+      },
+      "name": {
+        "type": "string",
+        "description": "The name of the channel",
+        "$default": {
+            "$source": "argv",
+            "index": 0
+          },
+        "x-prompt": "What is your channel's name?"
+      },
+      "display": {
+        "type": "string",
+        "description": "The display name of the channel",
+        "$default": {
+            "$source": "argv",
+            "index": 1
+          },
+        "x-prompt": "What is your channel's display name?"
+      },
+      "path": {
+        "type": "string",
+        "format": "path",
+        "description": "The path to create the component",
+        "alias": "p"
+      },
+      "module": {
+        "type": "string",
+        "description": "The declaring module",
+        "alias": "m"
+      },
+      "advice": {
+        "type": "boolean",
+        "description": "show the advice?",
+        "alias": "a"
+      },
+      "wisdom": {
+        "type": "boolean",
+        "description": "have wisdom api",
+        "alias": "w"
+      },
+      "department": {
+        "type": "boolean",
+        "description": "show the department",
+        "alias": "dm"
+      },
+      "doctor": {
+        "type": "boolean",
+        "description": "show the doctor",
+        "alias": "dc"
+      },
+      "diagnose": {
+        "type": "boolean",
+        "description": "show the diagnose",
+        "alias": "dg"
+      }
+    },
+    "required": [
+        "name"
+    ],
+    "additionalProperties": false
+  }
