@@ -5,6 +5,7 @@ import { Schema } from './schema';
 import { dasherize, classify } from '@angular-devkit/core/src/utils/strings';
 import { parseName } from '../utils/parse-name';
 import { findModuleFromOptions } from '../schematics-angular-utils/find-module';
+import { addDeclarationToNgModule } from '../utils/ng-module-utils';
 
 export default function(_options: Schema): Rule {
   return (tree: Tree, _context: SchematicContext) => {
@@ -24,6 +25,7 @@ export default function(_options: Schema): Rule {
     return chain([
       branchAndMerge(chain([
         mergeWith(templateSource),
+        addAdviceDeclarationToModule(_options)
       ]))
     ]);
   };
@@ -50,4 +52,17 @@ function filterTemplates(options: Schema): Rule {
     return filter(path => !path.match(/advice-/) && !path.match(/\.bak$/));
   }
   return filter(path => !path.match(/\.bak$/));
+}
+
+function addAdviceDeclarationToModule(options: Schema): Rule {
+  if (options.advice) {
+    return addDeclarationToNgModule(
+      options.module||'',
+      `Advice${classify(options.name)}Component`,
+      `${options.path}/${dasherize(options.name)}/advice-${dasherize(options.name)}.component`,
+    );
+  }
+  else {
+    return (host: Tree) => host;
+  }
 }

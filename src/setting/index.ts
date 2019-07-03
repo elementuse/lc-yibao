@@ -24,7 +24,11 @@ export default function(_options: Schema): Rule {
     return chain([
       branchAndMerge(chain([
         mergeWith(templateSource),
-        addDeclarationToNgModule(_options, false),
+        addDeclarationToNgModule(
+          _options.module||'',
+          `${classify(_options.name)}${classify(_options.type||'')}Component`,
+          `${_options.path}/${dasherize(_options.name)}/${dasherize(_options.name)}-${dasherize(_options.type||'')}.component`,
+        ),
         addComponentIntoRouteMoudle(_options)
       ]))
     ]);
