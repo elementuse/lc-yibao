@@ -4,7 +4,7 @@ import * as ts from 'typescript';
 
 // Referencing forked and copied private APIs 
 import { buildRelativePath } from '../schematics-angular-utils/find-module';
-import { addDeclarationToModule, addExportToModule } from '../schematics-angular-utils/ast-utils';
+import { addDeclarationToModule, addExportToModule, addProviderToModule } from '../schematics-angular-utils/ast-utils';
 import { InsertChange } from '../schematics-angular-utils/change';
 
 export function addDeclarationToNgModule(modulePath: string, componentName: string, componentPath: string, exports: boolean = false): Rule {
@@ -13,6 +13,13 @@ export function addDeclarationToNgModule(modulePath: string, componentName: stri
     if (exports) {
       addExport(host, modulePath, componentName, componentPath);
     }
+    return host;
+  };
+}
+
+export function addProviderToNgModule(modulePath: string, componentName: string, componentPath: string): Rule {
+  return (host: Tree) => {
+    addProvider(host, modulePath, componentName, componentPath);
     return host;
   };
 }
@@ -57,4 +64,20 @@ function addExport(host: Tree, modulePath: string, componentName: string, compon
     }
   }
   host.commitUpdate(exportRecorder);
+};
+
+function addProvider(host: Tree, modulePath: string, componentName: string, componentPath: string) {
+  const providerChanges = addProviderToModule(
+    createSource(host, modulePath),
+    modulePath,
+    componentName,
+    buildRelativePath(modulePath, componentPath));
+
+  const providerRecorder = host.beginUpdate(modulePath);
+  for (const change of providerChanges) {
+    if (change instanceof InsertChange) {
+      providerRecorder.insertLeft(change.pos, change.toAdd);
+    }
+  }
+  host.commitUpdate(providerRecorder);
 };

@@ -11,4 +11,6 @@ export interface YibaoSchema {
     type?: string;
     path?: string;
     module?: string;
+
+    sourcePath?: string;
   }
