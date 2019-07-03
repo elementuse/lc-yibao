@@ -31,7 +31,8 @@ export default function(_options: Schema): Rule {
         mergeWith(templateSource),
         addAdviceDeclarationToModule(_options),
         addChargeItemProviderToModule(_options),
-        addChargeItemToFactor(_options)
+        addChargeItemToFactor(_options),
+        addClientProxyProviderToModule(_options)
       ]))
     ]);
   };
@@ -150,14 +151,10 @@ function buildChargeitemFactorChanges(host: Tree, options: Schema, targetFilePat
 
 }
 
-function showTree(node: ts.Node, depth: number = 0): void {
-  let indent = ''.padEnd(depth*4, ' ');
-  console.log(indent + ts.SyntaxKind[node.kind]);
-  if (node.getChildCount() === 0) {
-      console.log(indent + '    Text: ' + node.getText());
-  }
-
-  for(let child of node.getChildren()) {
-      showTree(child, depth+1);
-  }
+function addClientProxyProviderToModule(options: Schema): Rule {
+  return addProviderToNgModule(
+    `${options.sourcePath}/shared/chargeItem-service.module.ts`,
+    `Client${classify(options.name)}Proxy`,
+    `${options.path}/${dasherize(options.name)}/client-${dasherize(options.name)}.proxy`,
+  );
 }
