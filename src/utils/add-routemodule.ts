@@ -34,13 +34,11 @@ function createAddRouteModuleContext(options: ModuleOptions, host: Tree): AddRou
     }
 }
 
-export function addComponentIntoRouteMoudle(options: ModuleOptions): Rule {
+export function addComponentIntoRouteMoudle(modulePath: string, componentName: string, componentPath: string, childPath: string, path: string = ''): Rule {
     return (host: Tree) => {
-        let context = createAddRouteModuleContext(options, host);
-
-        let changes = buildRouteMoudleChanges(context, host, options);
+        let changes = buildRouteMoudleChanges(host, modulePath, componentName, componentPath, childPath, path);
         
-        const recorder = host.beginUpdate(context.moduleFilePath);
+        const recorder = host.beginUpdate(modulePath);
         for (let change of changes) {
             if (change instanceof InsertChange) {
                 recorder.insertLeft(change.pos, change.toAdd);
@@ -52,57 +50,65 @@ export function addComponentIntoRouteMoudle(options: ModuleOptions): Rule {
     };
 };
 
-function buildRouteMoudleChanges(context: AddRouteModuleContext, host: Tree, options: ModuleOptions): Change[] {
-
-    let text = host.read(context.moduleFilePath);
-    if (!text) throw new SchematicsException(`File ${options.module} does not exist.`);
+function buildRouteMoudleChanges(host: Tree, modulePath: string, componentName: string, componentPath: string, childPath: string, path: string): Change[] {
+    let text = host.read(modulePath);
+    if (!text) throw new SchematicsException(`File ${modulePath} does not exist.`);
     let sourceText = text.toString('utf-8');
 
-    let sourceFile = ts.createSourceFile(context.moduleFilePath, sourceText, ts.ScriptTarget.Latest, true);
+    let sourceFile = ts.createSourceFile(modulePath, sourceText, ts.ScriptTarget.Latest, true);
 
-    let nodes = getSourceNodes(sourceFile);
+    let nodes = getSourceNodes(sourceFile); 
 
-    let assignNodes = nodes.filter(n => n.kind === ts.SyntaxKind.PropertyAssignment);
-    let childrenNode = assignNodes.find(n => {
-        let identifierNode = n.getChildren().find(c => c.kind === ts.SyntaxKind.Identifier);
-        if (!identifierNode) return false;
+    // let routeNode = nodes.find(n => n.kind == ts.SyntaxKind.TypeReference);
 
-        return identifierNode.getText() == 'children';
-    });
-    if (!childrenNode) {
-        throw new SchematicsException('children node not find!');
-    }
+    // showTree(nodes[0]);
+    let type = "TypeReference";
+    let tf = ts.SyntaxKind[type as keyof typeof ts.SyntaxKind];
+    console.log("TypeReference:", tf === ts.SyntaxKind.TypeReference);
+    console.log("TypeReference22:", tf === ts.SyntaxKind.ClassDeclaration);
 
-    let listNode = findNodeByPath(childrenNode, [ts.SyntaxKind.ArrayLiteralExpression, ts.SyntaxKind.SyntaxList]);
-    if (!listNode) {
-        throw new SchematicsException('children node have not list!');
-    }
 
-    let listNodes = listNode.getChildren();
+    // let assignNodes = nodes.filter(n => n.kind === ts.SyntaxKind.PropertyAssignment);
+    // let childrenNode = assignNodes.find(n => {
+    //     let identifierNode = n.getChildren().find(c => c.kind === ts.SyntaxKind.Identifier);
+    //     if (!identifierNode) return false;
 
-    let change: Change;
-    if (listNodes.length == 0) {
-        let toAdd = `
-        { path: '${classify(options.name)}', component: ${classify(options.name)}${classify(options.type || '')}Component}`;
-        change = new InsertChange(context.moduleFilePath, listNode.end, toAdd);
-    }
-    else {
-        let lastNode = listNodes[listNodes.length - 1];
-        if (lastNode.kind == ts.SyntaxKind.CommaToken) {
-            let toAdd = `
-            { path: '${classify(options.name)}', component: ${classify(options.name)}${classify(options.type || '')}Component}`;
-            change = new InsertChange(context.moduleFilePath, lastNode.end, toAdd);
-        }
-        else {
-            let toAdd = `,
-            { path: '${classify(options.name)}', component: ${classify(options.name)}${classify(options.type || '')}Component}`;
-            change = new InsertChange(context.moduleFilePath, lastNode.end, toAdd);
-        }
-    }
+    //     return identifierNode.getText() == 'children';
+    // });
+    // if (!childrenNode) {
+    //     throw new SchematicsException('children node not find!');
+    // }
+
+    // let listNode = findNodeByPath(childrenNode, [ts.SyntaxKind.ArrayLiteralExpression, ts.SyntaxKind.SyntaxList]);
+    // if (!listNode) {
+    //     throw new SchematicsException('children node have not list!');
+    // }
+
+    // let listNodes = listNode.getChildren();
+
+    // let change: Change;
+    // if (listNodes.length == 0) {
+    //     let toAdd = `
+    //     { path: '${classify(options.name)}', component: ${classify(options.name)}${classify(options.type || '')}Component}`;
+    //     change = new InsertChange(context.moduleFilePath, listNode.end, toAdd);
+    // }
+    // else {
+    //     let lastNode = listNodes[listNodes.length - 1];
+    //     if (lastNode.kind == ts.SyntaxKind.CommaToken) {
+    //         let toAdd = `
+    //         { path: '${classify(options.name)}', component: ${classify(options.name)}${classify(options.type || '')}Component}`;
+    //         change = new InsertChange(context.moduleFilePath, lastNode.end, toAdd);
+    //     }
+    //     else {
+    //         let toAdd = `,
+    //         { path: '${classify(options.name)}', component: ${classify(options.name)}${classify(options.type || '')}Component}`;
+    //         change = new InsertChange(context.moduleFilePath, lastNode.end, toAdd);
+    //     }
+    // }
 
     return [
-        insertImport(sourceFile, context.moduleFilePath, context.componentName, context.relativeComponentPath),
-        change
+        // insertImport(sourceFile, context.moduleFilePath, context.componentName, context.relativeComponentPath),
+        // change
     ];
 
 }
@@ -117,4 +123,16 @@ function findNodeByPath(node: ts.Node, searchPath: ts.SyntaxKind[] ) {
         children = next.getChildren();
     }
     return next;
+}
+
+function showTree(node: ts.Node, depth: number = 0): void {
+    let indent = ''.padEnd(depth*4, ' ');
+    console.log(indent + ts.SyntaxKind[node.kind]);
+    if (node.getChildCount() === 0) {
+        console.log(indent + '    Text: ' + node.getText());
+    }
+
+    for(let child of node.getChildren()) {
+        showTree(child, depth+1);
+    }
 }

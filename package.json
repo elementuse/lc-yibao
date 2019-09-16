@@ -8,7 +8,7 @@
     "link:schematic": "yarn link && cd yibaodemo && yarn link \"lc-yibao\"",
     "yibaodemo:yibao": "cd yibaodemo && ng g lc-yibao:yibao test 测试",
     "yibaodemo:setting": "cd yibaodemo && ng g lc-yibao:setting test 测试",
-    "yibaodemo:process": "cd yibaodemo && ng g lc-yibao:process test 测试 --advice true --wisdom true --doctor true --diagnose true",
+    "yibaodemo:process": "cd yibaodemo && ng g lc-yibao:process Zhoushan 舟山 --advice false --wisdom false --department false --doctor true --diagnose true",
     "test": "yarn build && yarn clean && yarn yibaodemo:process",
     "test:yibaodemo": "yarn test && ng serve"
   },

@@ -32,7 +32,9 @@ export default function(_options: Schema): Rule {
         addAdviceDeclarationToModule(_options),
         addChargeItemProviderToModule(_options),
         addChargeItemToFactor(_options),
-        addClientProxyProviderToModule(_options)
+        addClientProxyProviderToModule(_options),
+        addProcessDeclarationToModule(_options),
+        addRefundDeclarationToModule(_options)
       ]))
     ]);
   };
@@ -156,5 +158,21 @@ function addClientProxyProviderToModule(options: Schema): Rule {
     `${options.sourcePath}/shared/chargeItem-service.module.ts`,
     `Client${classify(options.name)}Proxy`,
     `${options.path}/${dasherize(options.name)}/client-${dasherize(options.name)}.proxy`,
+  );
+}
+
+function addProcessDeclarationToModule(options: Schema): Rule {
+  return addDeclarationToNgModule(
+    options.module||'',
+    `Process${classify(options.name)}Component`,
+    `${options.path}/${dasherize(options.name)}/process-${dasherize(options.name)}.component`,
+  );
+}
+
+function addRefundDeclarationToModule(options: Schema): Rule {
+  return addDeclarationToNgModule(
+    options.module||'',
+    `Refund${classify(options.name)}Component`,
+    `${options.path}/${dasherize(options.name)}/refund-${dasherize(options.name)}.component`,
   );
 }

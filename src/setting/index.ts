@@ -21,15 +21,22 @@ export default function(_options: Schema): Rule {
       move(_options.path || '')
     ]);
 
+    let componentName = `${classify(_options.name)}${classify(_options.type||'')}Component`;
+    let componentPath = `${_options.path}/${dasherize(_options.name)}/${dasherize(_options.name)}-${dasherize(_options.type||'')}.component`;
     return chain([
       branchAndMerge(chain([
         mergeWith(templateSource),
         addDeclarationToNgModule(
           _options.module||'',
-          `${classify(_options.name)}${classify(_options.type||'')}Component`,
-          `${_options.path}/${dasherize(_options.name)}/${dasherize(_options.name)}-${dasherize(_options.type||'')}.component`,
+          componentName,
+          componentPath,
         ),
-        addComponentIntoRouteMoudle(_options)
+        addComponentIntoRouteMoudle(
+          `${_options.path}/setting-routing.module.ts`,
+          componentName,
+          componentPath,
+          classify(_options.name)
+        )
       ]))
     ]);
   };
