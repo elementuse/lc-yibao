@@ -93,7 +93,7 @@ export class Process<%= classify(name) %>Component extends AppComponentBase
         this.hisservice
             .getRegisteredItems(queryRegisteredItemInput)
             .subscribe(res => {
-                this.providers = res.items;
+                this.departments = res.items;
             });<% } %>
         <% if(doctor) { %>
         queryRegisteredItemInput.objectType = "Provider";

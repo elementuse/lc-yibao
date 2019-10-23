@@ -7,8 +7,8 @@
     "clean": "git checkout HEAD -- yibaodemo && git clean -f -d yibaodemo",
     "link:schematic": "yarn link && cd yibaodemo && yarn link \"lc-yibao\"",
     "yibaodemo:yibao": "cd yibaodemo && ng g lc-yibao:yibao test 测试",
-    "yibaodemo:setting": "cd yibaodemo && ng g lc-yibao:setting test 测试",
-    "yibaodemo:process": "cd yibaodemo && ng g lc-yibao:process Zhoushan 舟山 --advice false --wisdom false --department false --doctor true --diagnose true",
+    "yibaodemo:setting": "cd yibaodemo && ng g lc-yibao:setting Zhoushan 舟山",
+    "yibaodemo:process": "cd yibaodemo && ng g lc-yibao:process Yichun 宜春 --advice false --wisdom false --department true --doctor true --diagnose true",
     "test": "yarn build && yarn clean && yarn yibaodemo:process",
     "test:yibaodemo": "yarn test && ng serve"
   },
