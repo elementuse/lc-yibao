@@ -161,9 +161,6 @@ export class Process<%= classify(name) %>Component extends AppComponentBase
         }, this.baseParams);
         this.yibaoservice
             .readcard(readcardParams)
-            .finally(() => {
-                abp.ui.clearBusy();
-            })
             <% if(wisdom) { %>.mergeMap(res => {
                 this.patient = res;
                 if (!this.patient) return;
@@ -172,6 +169,9 @@ export class Process<%= classify(name) %>Component extends AppComponentBase
                     //TODO:提醒参数
                 };
                 return this.yibaoservice.remind(remindParams);
+            })
+            .finally(() => {
+                abp.ui.clearBusy();
             })
             .subscribe();<% } else { %>
             .subscribe(res => {
@@ -258,9 +258,6 @@ export class Process<%= classify(name) %>Component extends AppComponentBase
 
         return this.yibaoservice
             .presettle(preSettleParams)
-            .finally(() => {
-                abp.ui.clearBusy();
-            })
             <% if(wisdom) { %>.mergeMap(res => {
                 this.settleResult = res;
 
@@ -278,6 +275,9 @@ export class Process<%= classify(name) %>Component extends AppComponentBase
                     settleResult: this.settleResult
                 };
                 return this.processService.action(this.processid, request);
+            })
+            .finally(() => {
+                abp.ui.clearBusy();
             })
             .subscribe(res => {
                 this.doAction(res);
